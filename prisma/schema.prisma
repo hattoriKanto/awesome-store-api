@@ -1,0 +1,143 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String     @id @default(uuid())
+  email             String     @unique()
+  fullName          String     @map("full_name")
+  phone             String
+  password          String
+  role              Role       @default(USER)
+  isVerified        Boolean    @default(false) @map("is_verified")
+  verificationCode  String?    @map("verification_code")
+
+  createdAt         DateTime   @default(now()) @map("created_at")
+  updatedAt         DateTime   @default(now()) @updatedAt @map("updated_at")
+
+  cart              Cart?
+  orders            Order[]
+  addresses         Address[]
+  @@map("users")
+}
+
+model Address {
+  id                String    @id @default(uuid())
+  userId            String    @map("user_id")
+  label             String
+  country           String
+  region            String
+  locality          String
+  street            String
+  postalCode        String    @map("postal_code")
+  latitude          Float?
+  longitude         Float?
+  isDefault         Boolean   @default(false) @map("is_default")
+
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @default(now()) @updatedAt @map("updated_at")
+
+  user              User      @relation(fields: [userId], references: [id])
+  orders            Order[]
+  @@map("adresses")
+}
+
+model Product {
+  id                String     @id @default(uuid())
+  name              String
+  description       String
+  price             Decimal
+  category          String
+  amount            Int
+
+  createdAt         DateTime   @default(now()) @map("created_at")
+  updatedAt         DateTime   @default(now()) @updatedAt @map("updated_at")
+
+  cartItems         CartItem[]
+  orderItems        OrderItem[]
+  @@map("products")
+}
+
+model Cart {
+  id                String       @id @default(uuid())
+  userId            String       @unique
+  totalPrice        Decimal      @default(0) @map("total_price")
+
+  createdAt         DateTime     @default(now()) @map("created_at")
+  updatedAt         DateTime     @default(now()) @updatedAt @map("updated_at")
+
+  cartItems         CartItem[]
+  user              User         @relation(fields: [userId], references: [id])
+  @@map("carts") 
+}
+
+model CartItem {
+  id                String     @id @default(uuid())
+  cartId            String     @map("cart_id") 
+  productId         String     @map("product_id") 
+  amount            Int
+  price             Decimal
+  totalPrice        Decimal        @map("total_price")
+
+  createdAt         DateTime   @default(now()) @map("created_at")
+  updatedAt         DateTime   @default(now()) @updatedAt @map("updated_at")
+
+  cart              Cart       @relation(fields: [cartId], references: [id])
+  product           Product    @relation(fields: [productId], references: [id])
+  @@map("cart_items") 
+}
+
+model Order {
+  id                String         @id @default(uuid())
+  userId            String         @map("user_id") 
+  addressId         String         @map("address_id")
+  totalPrice        Decimal        @map("total_price")
+  deliveryStatus    DeliveryStatus @default(ON_THE_WAY) @map("delivery_status")
+  paymentStatus     PaymentStatus  @default(PENDING) @map("payment_status")
+
+  createdAt         DateTime       @default(now()) @map("created_at")
+  updatedAt         DateTime       @default(now()) @updatedAt @map("updated_at")
+
+  user              User           @relation(fields: [userId], references: [id])
+  address           Address        @relation(fields: [addressId], references: [id])
+  orderItems        OrderItem[]
+  @@map("orders") 
+}
+
+model OrderItem {
+  id                String        @id @default(uuid())
+  orderId           String        @map("order_id")
+  productId         String        @map("product_id")
+  amount            Int
+  price             Decimal
+  totalPrice        Decimal       @map("total_price")
+
+  createdAt         DateTime      @default(now()) @map("created_at")
+  updatedAt         DateTime      @default(now()) @updatedAt @map("updated_at")
+
+  order             Order         @relation(fields: [orderId], references: [id])
+  product           Product       @relation(fields: [productId], references: [id])
+  @@map("order_item")
+}
+
+enum DeliveryStatus {
+  DELIVERED
+  ON_THE_WAY
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+}
+
+enum Role {
+  USER
+  ADMIN
+  DEVELOPER
+}
