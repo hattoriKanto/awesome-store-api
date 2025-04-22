@@ -139,5 +139,4 @@ enum PaymentStatus {
 enum Role {
   USER
   ADMIN
-  DEVELOPER
 }
