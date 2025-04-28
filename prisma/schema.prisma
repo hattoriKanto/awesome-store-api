@@ -29,14 +29,14 @@ model User {
 model Address {
   id                String    @id @default(uuid())
   userId            String    @map("user_id")
-  label             String
+  label             String?       
   country           String
   region            String
   locality          String
   street            String
   postalCode        String    @map("postal_code")
-  latitude          Float?
-  longitude         Float?
+  latitude          Float
+  longitude         Float
   isDefault         Boolean   @default(false) @map("is_default")
 
   createdAt         DateTime  @default(now()) @map("created_at")
