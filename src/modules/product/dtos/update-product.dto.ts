@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNotIn, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class UpdateProductDto {
   @IsString()
@@ -20,6 +20,7 @@ export class UpdateProductDto {
 
   @IsNumber()
   @IsOptional()
+  @IsNotIn([0])
   @Transform(({ value }) => (value ? parseFloat(value) : undefined))
   price: number;
 }
