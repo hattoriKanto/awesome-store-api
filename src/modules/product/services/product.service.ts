@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Product } from '@prisma/client';
+import { Prisma, Product } from '@prisma/client';
 import { PrismaService } from 'src/modules/prisma/services/prisma.service';
 import { ProductsResponse, SortOrderQuery } from 'src/types';
 import { CreateProductDto, QueryProductDto, UpdateProductDto } from '../dtos';

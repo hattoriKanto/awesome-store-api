@@ -35,7 +35,7 @@ export class ProductController {
     return resource;
   }
 
-  @Roles($Enums.Role.ADMIN)
+  // @Roles($Enums.Role.ADMIN)
   @Post()
   createProduct(@Body() createProduct: CreateProductDto): Promise<Product> {
     return this.productService.createProduct(createProduct);

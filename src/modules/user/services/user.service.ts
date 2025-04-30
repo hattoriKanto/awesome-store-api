@@ -5,9 +5,10 @@ import {
 } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
 import { MESSAGES } from 'src/constants';
-import { UserCodeUpdate, UserStatusUpdate } from 'src/types';
+import { SuccessResponse, UserCodeUpdate, UserStatusUpdate } from 'src/types';
 import { AddressService } from 'src/modules/address/services/address.service';
 import { PrismaService } from 'src/modules/prisma/services/prisma.service';
+import { CartService } from 'src/modules/cart/services/cart.service';
 import { RegisterUserDto } from 'src/modules/auth/dtos';
 import { RegisterAddressDto } from 'src/modules/address/dtos';
 
@@ -16,6 +17,7 @@ export class UserService {
   constructor(
     private prisma: PrismaService,
     private addressService: AddressService,
+    private cartService: CartService,
   ) {}
 
   async findUserById(
@@ -29,8 +31,12 @@ export class UserService {
     });
   }
 
-  async findUserByEmail(email: string): Promise<User | null> {
-    return this.prisma.user.findUnique({ where: { email } });
+  async findUserByEmail(
+    email: string,
+    tx?: Prisma.TransactionClient,
+  ): Promise<User | null> {
+    const client = tx ?? this.prisma;
+    return client.user.findUnique({ where: { email } });
   }
 
   async findAllUsers(): Promise<User[]> {
@@ -51,12 +57,12 @@ export class UserService {
     phone,
     verificationCode,
   }: RegisterUserDto & { verificationCode: string }): Promise<User> {
-    const user = await this.findUserByEmail(email);
-    if (user) {
-      throw new ConflictException(MESSAGES.user.exist);
-    }
+    return this.prisma.$transaction(async (tx) => {
+      const user = await this.findUserByEmail(email, tx);
+      if (user) {
+        throw new ConflictException(MESSAGES.user.exist);
+      }
 
-    const newUser = await this.prisma.$transaction(async (tx) => {
       const createdUser = await tx.user.create({
         data: {
           email,
@@ -78,17 +84,12 @@ export class UserService {
         isDefault: false,
         label: null,
       };
-      const address = await this.addressService.createAddress(
-        createdUser.id,
-        addressData,
-        tx,
-      );
+      await this.addressService.createAddress(createdUser.id, addressData, tx);
 
-      const newUser = await this.findUserById(address.userId, tx);
-      return newUser;
+      await this.cartService.createCart(createdUser.id, tx);
+
+      return this.findUserById(createdUser.id, tx);
     });
-
-    return newUser;
   }
 
   async updateUserStatus({ id, isVerified }: UserStatusUpdate): Promise<void> {
@@ -115,6 +116,23 @@ export class UserService {
     await this.prisma.user.update({
       where: { id },
       data: { verificationCode },
+    });
+  }
+
+  async deleteUserById(id: string): Promise<SuccessResponse> {
+    return this.prisma.$transaction(async (tx) => {
+      const user = await this.findUserById(id, tx);
+      if (!user) {
+        throw new NotFoundException(MESSAGES.user.notFound);
+      }
+
+      await tx.user.delete({ where: { id } });
+
+      return {
+        success: true,
+        messages: MESSAGES.user.successDeletion,
+        timestamp: new Date().toISOString(),
+      };
     });
   }
 }

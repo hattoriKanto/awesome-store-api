@@ -79,19 +79,4 @@ export class AddressService {
       timestamp: new Date().toISOString(),
     };
   }
-
-  async deleteAllAddressesByUserId(userId: string): Promise<SuccessResponse> {
-    const user = await this.prisma.user.findUnique({ where: { id: userId } });
-    if (!user) {
-      throw new NotFoundException(MESSAGES.user.notFound);
-    }
-
-    await this.prisma.address.deleteMany({ where: { userId } });
-
-    return {
-      success: true,
-      messages: MESSAGES.address.successDeletion,
-      timestamp: new Date().toISOString(),
-    };
-  }
 }
