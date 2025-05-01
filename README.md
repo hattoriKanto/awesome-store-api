@@ -23,19 +23,19 @@ The Awesome Store API is a RESTful backend service. It handles everything from u
 ### ✨ Features
 
 - 🧑‍💻 **User Registration & Email Verification**
-  New users can register and verify their email via secure JWT tokens — no spam, just security.
+  New users can register and verify their email via secure JWT tokens - no spam, just security.
 
 - 🛡️ **Role-Based Access Control (RBAC)**
   Built-in admin and user roles ensure proper access levels. Admins can manage products, users get what they need.
 
 - 📦 **Product Management**
-  Full CRUD support for managing store products — add, update, delete, or just browse.
+  Full CRUD support for managing store products - add, update, delete, or just browse.
 
 - 🛍️ **User Carts**
   Every user gets their own cart for adding/removing products and living their best online shopping life.
 
 - 🔜 **Orders** _(Coming Soon)_  
-  Checkout flow and order history are on the roadmap — just not cooked yet 🍳.
+  Checkout flow and order history are on the roadmap - just not cooked yet 🍳.
 
 ## 🔑 Prerequisites
 
@@ -46,18 +46,18 @@ The Awesome Store API is a RESTful backend service. It handles everything from u
 
 This project is built with a modern Node.js stack focused on scalability, modularity:
 
-- ⚡ **[NestJS](https://nestjs.com/)** – Progressive Node.js framework for building efficient and scalable server-side applications.
-- 🔐 **[Passport.js](http://www.passportjs.org/)** with **JWT** & **Local Strategy** – Handles user authentication and role-based access.
-- 📬 **[Nodemailer](https://nodemailer.com/)** – Sends email verifications like a boss.
-- 🧠 **[class-validator](https://github.com/typestack/class-validator)** & **[class-transformer](https://github.com/typestack/class-transformer)** – Handles validation and object transformation like magic.
-- 🧬 **[Prisma ORM](https://www.prisma.io/)** – Type-safe, next-gen ORM for database access.
-- 🐘 **[PostgreSQL](https://www.postgresql.org/)** – Reliable, battle-tested relational database.
-- 💻 **Postman** – For manual testing of API endpoints and staying sane.
-- 📦 **TypeScript** – For static typing and a better dev experience.
+- ⚡ **[NestJS](https://nestjs.com/)** - Progressive Node.js framework for building efficient and scalable server-side applications.
+- 🔐 **[Passport.js](http://www.passportjs.org/)** with **JWT** & **Local Strategy** - Handles user authentication and role-based access.
+- 📬 **[Nodemailer](https://nodemailer.com/)** - Sends email verifications like a boss.
+- 🧠 **[class-validator](https://github.com/typestack/class-validator)** & **[class-transformer](https://github.com/typestack/class-transformer)** - Handles validation and object transformation like magic.
+- 🧬 **[Prisma ORM](https://www.prisma.io/)** - Type-safe, next-gen ORM for database access.
+- 🐘 **[PostgreSQL](https://www.postgresql.org/)** - Reliable, battle-tested relational database.
+- 💻 **Postman** - For manual testing of API endpoints and staying sane.
+- 📦 **TypeScript** - For static typing and a better dev experience.
 
 ## Endpoints
 
-🔜 **I am working on it, I swear** _(Coming Soon)_
+🔜 **I am working on it** _(Coming Soon)_
 
 ## 💪🏼 Install
 
