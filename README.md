@@ -22,19 +22,19 @@ The Awesome Store API is a RESTful backend service. It handles everything from u
 
 ### ✨ Features
 
-- 🧑‍💻 **User Registration & Email Verification**
+- 🧑‍💻 **User Registration & Email Verification:**
   New users can register and verify their email via secure JWT tokens - no spam, just security.
 
-- 🛡️ **Role-Based Access Control (RBAC)**
+- 🛡️ **Role-Based Access Control (RBAC):**
   Built-in admin and user roles ensure proper access levels. Admins can manage products, users get what they need.
 
-- 📦 **Product Management**
+- 📦 **Product Management:**
   Full CRUD support for managing store products - add, update, delete, or just browse.
 
-- 🛍️ **User Carts**
+- 🛍️ **User Carts:**
   Every user gets their own cart for adding/removing products and living their best online shopping life.
 
-- 🔜 **Orders** _(Coming Soon)_  
+- 🔜 **Orders:** _(Coming Soon)_  
   Checkout flow and order history are on the roadmap - just not cooked yet 🍳.
 
 ## 🔑 Prerequisites
